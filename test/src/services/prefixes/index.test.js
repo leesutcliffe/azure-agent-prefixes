@@ -5,10 +5,10 @@ const cheerio = require('cheerio')
 chai.use(chaiAsPromised)
 var fs = require('fs');
 
-const { returnDownloadUrl, getAzureIps, extractIps } = require('../../../../src/services/getAddrPrefixes')
+const { returnDownloadUrl, getAzureIps, extractIps } = require('../../../../src/services/prefixes')
 const ranges = require('./ranges.json')
 
-const html = fs.readFileSync('test/src/services/getAddrPrefixes/source.html', "utf8");
+const html = fs.readFileSync('test/src/services/prefixes/source.html', "utf8");
 
 describe('returnDownloadUrl tests', () => {
 
@@ -88,7 +88,7 @@ describe('extractIps tests', () => {
     it('returns an array of ip ranges in the given region', () => {
         const data = extractIps(['AzureCloud.uksouth'], ranges)
         console.log(data)
-        expect(data).to.be.an('array').that.includes('13.104.129.128/26')
+        expect(data).to.be.an('string').that.includes('13.104.129.128/26')
     })
 
 })

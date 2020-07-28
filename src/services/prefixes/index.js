@@ -64,8 +64,9 @@ function extractIps(regions, AzIpRanges) {
         })
     })
 
-    //return flattened array
-    return ipArray.flat()
+    //flatten array and return as string
+    const flatten = ipArray.flat()
+    return flatten.toString()
 }
 
 module.exports = {
