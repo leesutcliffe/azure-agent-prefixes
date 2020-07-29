@@ -11,7 +11,4 @@ main()
 async function main() {
     const url = await returnDownloadUrl(got, msUrl, cheerio)
     const json = await getAzureIps(got, url)
-    
-    console.log(extractIps(regions, json))
-   
 }

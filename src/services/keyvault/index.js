@@ -1,36 +1,30 @@
-const { DefaultAzureCredential } = require('@azure/identity')
-const { SecretClient } = require('@azure/keyvault-secrets')
+// const { DefaultAzureCredential } = require('@azure/identity')
+// const { SecretClient } = require('@azure/keyvault-secrets')
 const keyVaultName = process.env.KEY_VAULT_NAME
 const kvUri = 'https://' + keyVaultName + '.vault.azure.net'
 
 const { secretName } = require('../../config/config.json')
 
-main()
-//savePrefixesAndVerify("BLAH!!!")
-function main() {
-    try {
-        savePrefixesAndVerify("BLAH!!!")
-    } catch(err) {
-        console.error(err)
-    }   
+// savePrefixesAndVerify({name: secretName, value: "123"}, DefaultAzureCredential, SecretClient)
+//    .catch(console.error)
+
+/**
+ * Sets the value of secretName
+ * 
+ * @param {Object} sec - values of secret name and secretValue
+ * @param {FunctionConstructor} DefAzCred - DefaultAzureCredential contructor from @azure/identity
+ * @param {FunctionConstructor} SecClient - SecretClient from @azure/keyvault-secrets
+ */
+async function savePrefixesAndVerify(secret, DefAzCred, SecClient) {
+  
+    const credential = new DefAzCred()
+    const client = new SecClient(kvUri, credential)
+    await client.setSecret(secret.name, secret.value)
+    const retrievedSecret = await client.getSecret(secretName)   
+  
+    if (retrievedSecret.value === secret.value) {
+        return true
+    }
 }
 
-
-
-
-function savePrefixesAndVerify(secretValue) {
-        return new Promise(async function (resolve, reject) {
-            const credential = new DefaultAzureCredential()
-            const client = new SecretClient(kvUri, credential)
-            await client.setSecret(secretName, secretValue)
-            const retrievedSecret = await client.getSecret(secretName)
-            if (retrievedSecret === secretValue) {
-                resolve() 
-            } else {
-                reject('error')
-            }    
-        })
-
-}
-
-exports.savePrefixes = savePrefixesAndVerify
+exports.prefixes = savePrefixesAndVerify
