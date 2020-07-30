@@ -1,8 +1,8 @@
 {
-  "name": "ttd-agent-ip-automation",
+  "name": "azure-agent-prefix-automation",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "nyc": {
     "all": true,
     "check-coverage": true,
@@ -23,14 +23,17 @@
     "watch": "mocha --recursive --watch"
   },
   "keywords": [],
-  "author": "",
+  "author": "Lee Sutcliffe",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leesutcliffe/azure-agent-prefixes.git"
+  },
   "license": "ISC",
   "dependencies": {
     "@azure/identity": "^1.0.3",
     "@azure/keyvault-secrets": "^4.0.4",
     "cheerio": "^1.0.0-rc.3",
-    "got": "^11.5.1",
-    "logger": "0.0.1"
+    "got": "^11.5.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
