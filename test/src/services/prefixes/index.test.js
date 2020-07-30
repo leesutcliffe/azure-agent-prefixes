@@ -5,7 +5,7 @@ const cheerio = require('cheerio')
 chai.use(chaiAsPromised)
 var fs = require('fs');
 
-const { returnDownloadUrl, getAzureIps, extractIps } = require('../../../../src/services/prefixes')
+const { returnDownloadUrl, getAzPrefixes, extractIps } = require('../../../../src/services/prefixes')
 const ranges = require('./ranges.json')
 
 const html = fs.readFileSync('test/src/services/prefixes/source.html', "utf8");
@@ -39,7 +39,7 @@ describe('returnDownloadUrl tests', () => {
     })
 })
 
-describe('getAzureIps tests', () => {
+describe('getAzPrefixes tests', () => {
     function gotMockJson(url) {
         return new Promise((resolve, reject) => {
             json = JSON.stringify(ranges)
@@ -53,15 +53,15 @@ describe('getAzureIps tests', () => {
         })
     }
 
-    it('resolves promise in getAzureIps and retuns the contents of the url', async function() {
-        const data = await getAzureIps(gotMockJson, "http://test.local")
+    it('resolves promise in getAzPrefixes and retuns the contents of the url', async function() {
+        const data = await getAzPrefixes(gotMockJson, "http://test.local")
         return Promise.all([      
            //expect(data).to.equal(ranges)
         ])
     })
 
-    it('catches an error in getAzureIps', function() {
-        const data = getAzureIps(gotError, "http://test.local")
+    it('catches an error in getAzPrefixes', function() {
+        const data = getAzPrefixes(gotError, "http://test.local")
         return Promise.all([
             expect(data).to.be.rejectedWith('some error')
         ])

@@ -24,7 +24,7 @@ function returnDownloadUrl(get, url, ch) {
  * @param {*} get - Got function passed as argument
  * @param {*} url - location of weekly Azure IP json file
  */
-function getAzureIps(get, url) {
+function getAzPrefixes(get, url) {
     return new Promise(function (resolve, reject) {
         get(url)
             .then(res => {
@@ -71,6 +71,6 @@ function extractIps(regions, AzIpRanges) {
 
 module.exports = {
     returnDownloadUrl,
-    getAzureIps,
+    getAzPrefixes,
     extractIps
 }
