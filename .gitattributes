@@ -1,2 +1,1 @@
-test/src* linguist-vendored
-source.html -linguist-vendored
+*.rb linguist-language=HTML
