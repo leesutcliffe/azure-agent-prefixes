@@ -1,12 +1,7 @@
-// const { DefaultAzureCredential } = require('@azure/identity')
-// const { SecretClient } = require('@azure/keyvault-secrets')
 const keyVaultName = process.env.KEY_VAULT_NAME
 const kvUri = 'https://' + keyVaultName + '.vault.azure.net'
 
 const { secretName } = require('../../config/config.json')
-
-// savePrefixesAndVerify({name: secretName, value: "123"}, DefaultAzureCredential, SecretClient)
-//    .catch(console.error)
 
 /**
  * Sets the value of secretName
