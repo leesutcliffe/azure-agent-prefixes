@@ -7,7 +7,6 @@ const { SecretClient } = require('@azure/keyvault-secrets')
 const { msUrl, regions, secretName } = require('./config/config.json')
 const { returnDownloadUrl, getAzPrefixes, extractIps } = require('./services/prefixes')
 const kvSave = require('./services/keyvault')
-const { config } = require('chai')
 
 // start app
 main()

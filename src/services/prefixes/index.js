@@ -39,9 +39,9 @@ function getAzPrefixes(get, url) {
 
 /**
  * Returns an array of all ip ranges for the requested regions
- * 
- * @param {Array} regions - list of required regions 
- * @param {object} AzIpRanges - Parsed JSON object containing published Azure IP ranges 
+ *
+ * @param {Array} regions - list of required regions
+ * @param {object} AzIpRanges - Parsed JSON object containing published Azure IP ranges
  */
 function extractIps(regions, AzIpRanges) {
     // initialise eempty array
@@ -49,12 +49,12 @@ function extractIps(regions, AzIpRanges) {
 
     // validate value property
     if (!Object.prototype.hasOwnProperty.call(AzIpRanges, 'values')) {
-        throw new Error(`unable to read \'values\' property in response body`)
+        throw new Error('unable to read \'values\' property in response body')
     }
     regions.forEach(region => {
         AzIpRanges.values.forEach(value => {
             if (!Object.prototype.hasOwnProperty.call(value, 'name')) {
-                throw new Error(`unable to read \'values.name[${region}]\' property in response body`)
+                throw new Error(`unable to read 'values.name[${region}]' property in response body`)
             }
 
             // push ip ranges on to ipArray
@@ -64,7 +64,7 @@ function extractIps(regions, AzIpRanges) {
         })
     })
 
-    //flatten array and return as string
+    // flatten array and return as string
     const flatten = ipArray.flat()
     return flatten.toString()
 }
