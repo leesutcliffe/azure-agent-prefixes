@@ -1,0 +1,54 @@
+variables:
+  - name: 'tag'
+    value: '$(Build.BuildId)'
+
+stages:
+- stage: Test
+  displayName: Install app and test
+  jobs:
+    - job: InstallNodeRunTestsAndEsLint
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '14.5.0'
+
+      - script: npm i -g npm@6.14.5
+        displayName: 'Install npm 6.14.5'
+      - script: npm install
+        displayName: 'Install Dependancies.'
+      - script: npm run pipelinetests
+        displayName: 'Run Unit Tests and Coverage.'
+      - script: npm run lint
+        displayName: 'Run ES Lint.'
+
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          testRunner: JUnit
+          testResultsFiles: '**/test-results.xml'
+
+      - task: PublishCodeCoverageResults@1
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+          reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+            
+- stage: Build
+  displayName: Build Stage
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  jobs:
+  - job: BuildDockerImage
+    displayName: Build job
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(docker-repository)
+        dockerfile: '**/Dockerfile'
+        containerRegistry: $(docker-registry-service-connection)
+        tags: |
+          $(tag)
+          latest

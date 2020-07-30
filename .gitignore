@@ -67,3 +67,5 @@ test-results.xml
 .vscode/
 
 tmp/
+
+.DS_Store

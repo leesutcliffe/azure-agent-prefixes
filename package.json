@@ -1,13 +1,16 @@
 {
-  "name": "ttd-agent-ip-automation",
+  "name": "azure-agent-prefix-automation",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "nyc": {
     "all": true,
     "check-coverage": true,
     "include": [
       "src/**/*.js"
+    ],
+    "exclude": [
+      "src/index.js"
     ],
     "branches": 80,
     "lines": 80,
@@ -17,12 +20,19 @@
   "scripts": {
     "lint": "eslint --no-color src",
     "test": "nyc mocha --recursive && nyc report --reporter=html",
-    "watch": "mocha --recursive --watch"
+    "watch": "mocha --recursive --watch",
+    "pipelinetests": "nyc mocha --recursive test --reporter mocha-junit-reporter && nyc report --reporter=cobertura"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Lee Sutcliffe",
+  "repository": {
+    "type": "git",
+    "url": "https://TTDigital@dev.azure.com/TTDigital/Digital/_git/TTD-AgentIp-Automation"
+  },
+  "license": "MIT",
   "dependencies": {
+    "@azure/identity": "^1.0.3",
+    "@azure/keyvault-secrets": "^4.0.4",
     "cheerio": "^1.0.0-rc.3",
     "got": "^11.5.1"
   },
@@ -36,6 +46,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "mocha": "^8.0.1",
+    "mocha-junit-reporter": "2.0.0",
     "nyc": "^15.1.0"
   }
 }

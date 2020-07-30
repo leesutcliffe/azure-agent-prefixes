@@ -5,22 +5,16 @@ const cheerio = require('cheerio')
 chai.use(chaiAsPromised)
 var fs = require('fs');
 
-const { returnDownloadUrl, getAzureIps } = require('../src')
+const { returnDownloadUrl, getAzPrefixes, extractIps } = require('../../../../src/services/prefixes')
 const ranges = require('./ranges.json')
 
-const html = fs.readFileSync('test/source.html', "utf8");
+const html = fs.readFileSync('test/src/services/prefixes/source.html', "utf8");
 
 describe('returnDownloadUrl tests', () => {
 
     function gotMock(url) {
         return new Promise((resolve, reject) => {
             resolve({body: html})
-        })
-    }
-
-    function gotMockJson(url) {
-        return new Promise((resolve, reject) => {
-            resolve(ranges)
         })
     }
 
@@ -45,10 +39,11 @@ describe('returnDownloadUrl tests', () => {
     })
 })
 
-describe('getAzureIps tests', () => {
+describe('getAzPrefixes tests', () => {
     function gotMockJson(url) {
         return new Promise((resolve, reject) => {
-            resolve(ranges)
+            json = JSON.stringify(ranges)
+            resolve({body: json})
         })
     }
 
@@ -58,17 +53,42 @@ describe('getAzureIps tests', () => {
         })
     }
 
-    it('resolves promise in getAzureIps and retuns the contents of the url', async function() {
-        const data = await getAzureIps(gotMockJson, "http://test.local")
+    it('resolves promise in getAzPrefixes and retuns the contents of the url', async function() {
+        const data = await getAzPrefixes(gotMockJson, "http://test.local")
         return Promise.all([      
-           expect(data).to.equal(ranges)
+           expect(data).to.deep.equal(ranges)
         ])
     })
 
-    it('catches an error in getAzureIps', function() {
-        const data = getAzureIps(gotError, "http://test.local")
+    it('catches an error in getAzPrefixes', function() {
+        const data = getAzPrefixes(gotError, "http://test.local")
         return Promise.all([
             expect(data).to.be.rejectedWith('some error')
         ])
     })
+})
+
+describe('extractIps tests', () => {
+
+    const valueNoName = {
+        values: [
+            {},
+            {}
+        ]
+    }
+
+    it('throws and error if values property is missing', function() {
+        expect(() => {extractIps(['AzureCloud.uksouth'], {})}).to.throw()
+    })
+
+    it('throws and error if values.name property is missing', function() {
+        expect(() => {extractIps(['AzureCloud.uksouth'], valueNoName)}).to.throw()
+    })
+
+    it('returns an array of ip ranges in the given region', () => {
+        const data = extractIps(['AzureCloud.uksouth'], ranges)
+        console.log(data)
+        expect(data).to.be.an('string').that.includes('13.104.129.128/26')
+    })
+
 })
