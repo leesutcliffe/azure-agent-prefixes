@@ -1,6 +1,6 @@
 {
   "name": "azure-agent-prefix-automation",
-  "version": "1.0.0",
+  "version": "1.0",
   "description": "",
   "main": "src/index.js",
   "nyc": {
