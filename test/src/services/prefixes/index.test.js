@@ -56,7 +56,7 @@ describe('getAzPrefixes tests', () => {
     it('resolves promise in getAzPrefixes and retuns the contents of the url', async function() {
         const data = await getAzPrefixes(gotMockJson, "http://test.local")
         return Promise.all([      
-           //expect(data).to.equal(ranges)
+           expect(data).to.deep.equal(ranges)
         ])
     })
 
