@@ -1,6 +1,9 @@
 variables:
+  - group: Global Environment Variables
   - name: 'tag'
     value: '$(Build.BuildId)'
+  - name: 'docker-repository'
+    value: 'ttd-agentip-automation'
 
 stages:
 - stage: Test
