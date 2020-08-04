@@ -10,7 +10,9 @@ function returnDownloadUrl(get, url, ch) {
         get(url)
             .then(res => {
                 const $ = ch.load(res.body)
-                resolve($('.link-align').children().attr('href'))
+                const prefixUrl = $('.link-align').children().attr('href')
+                console.log(`Found prefix url: ${prefixUrl}`)
+                resolve(prefixUrl)
             })
             .catch(err => {
                 reject(err)
@@ -28,6 +30,7 @@ function getAzPrefixes(get, url) {
     return new Promise(function (resolve, reject) {
         get(url)
             .then(res => {
+                console.log(`parsing contents of ${url}`)
                 const parsed = JSON.parse(res.body)
                 resolve(parsed)
             })
@@ -52,6 +55,7 @@ function extractIps(regions, AzIpRanges) {
         throw new Error('unable to read \'values\' property in response body')
     }
     regions.forEach(region => {
+        console.log(`retrieving IP prefixes for region: ${region}`)
         AzIpRanges.values.forEach(value => {
             if (!Object.prototype.hasOwnProperty.call(value, 'name')) {
                 throw new Error(`unable to read 'values.name[${region}]' property in response body`)

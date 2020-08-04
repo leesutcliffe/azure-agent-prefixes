@@ -1,10 +1,16 @@
 variables:
-  - group: Global Environment Variables
-  - name: 'tag'
-    value: '$(Build.BuildId)'
-  - name: 'docker-repository'
-    value: 'ttd-agentip-automation'
+  - group: Hosted Agent IP Retrieval
+  - name: 'disable.coverage.autogenerate'
+    value: true
 
+schedules:
+- cron: "0 2 * * 4"
+  displayName: Weekly Schedule
+  branches:
+    include:
+    - master
+  always: true
+      
 stages:
 - stage: Test
   displayName: Install app and test
@@ -36,22 +42,48 @@ stages:
           summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
           reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
             
-- stage: Build
-  displayName: Build Stage
+- stage: Mango
+  displayName: Save Agent IP Prefixes to Mango
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
-  - job: BuildDockerImage
-    displayName: Build job
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
-      inputs:
-        command: buildAndPush
-        repository: $(docker-repository)
-        dockerfile: '**/Dockerfile'
-        containerRegistry: $(docker-registry-service-connection)
-        tags: |
-          $(tag)
-          latest
+    - job: InstallNode
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '14.5.0'
+
+      - script: npm i -g npm@6.14.5
+        displayName: 'Install npm 6.14.5'
+      - script: npm install
+        displayName: 'Install Dependancies.'
+      - script: node src/
+        displayName: 'Running app'
+        env:
+          AZURE_CLIENT_ID: $(Local.Client.Id)
+          AZURE_CLIENT_SECRET: $(Local.Client.Secret)
+          AZURE_TENANT_ID: $(Local.Tenant.Id)
+          KEY_VAULT_NAME: $(Local.Mango.Keyvault.name)
+
+- stage: Lemon
+  displayName: Save Agent IP Prefixes to Lemon
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  jobs:
+    - job: InstallNode
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '14.5.0'
+
+      - script: npm i -g npm@6.14.5
+        displayName: 'Install npm 6.14.5'
+      - script: npm install
+        displayName: 'Install Dependancies.'
+      - script: node src/
+        displayName: 'Running app'
+        env:
+          AZURE_CLIENT_ID: $(Local.Client.Id)
+          AZURE_CLIENT_SECRET: $(Local.Client.Secret)
+          AZURE_TENANT_ID: $(Local.Tenant.Id)
+          KEY_VAULT_NAME: $(Local.Lemon.Keyvault.name)
+
+            
