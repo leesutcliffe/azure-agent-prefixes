@@ -70,7 +70,7 @@ function extractIps(regions, AzIpRanges) {
 
     // flatten array and return as string
     const flatten = ipArray.flat()
-    return flatten.toString()
+    return JSON.stringify(flatten)
 }
 
 module.exports = {

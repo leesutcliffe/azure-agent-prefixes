@@ -4,7 +4,7 @@ variables:
     value: true
 
 schedules:
-- cron: "0 2 * * 4"
+- cron: "0 2 * * 1"
   displayName: Weekly Schedule
   branches:
     include:
