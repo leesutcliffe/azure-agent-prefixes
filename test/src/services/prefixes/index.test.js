@@ -88,7 +88,7 @@ describe('extractIps tests', () => {
     it('returns an array of ip ranges in the given region', () => {
         const data = extractIps(['AzureCloud.uksouth'], ranges)
         console.log(data)
-        expect(data).to.be.an('string').that.includes('13.104.129.128/26')
+        expect(data).to.be.an('string').that.includes('["13.104.129.128/26"')
     })
 
 })
