@@ -62,7 +62,7 @@ stages:
           AZURE_CLIENT_ID: $(Local.Client.Id)
           AZURE_CLIENT_SECRET: $(Local.Client.Secret)
           AZURE_TENANT_ID: $(Local.Tenant.Id)
-          KEY_VAULT_NAME: $(Local.Mango.Keyvault.name)
+          KEY_VAULT_NAME: $(Local.Mango.Keyvault.Name)
 
 - stage: Lemon
   displayName: Save Agent IP Prefixes to Lemon
@@ -84,6 +84,29 @@ stages:
           AZURE_CLIENT_ID: $(Local.Client.Id)
           AZURE_CLIENT_SECRET: $(Local.Client.Secret)
           AZURE_TENANT_ID: $(Local.Tenant.Id)
-          KEY_VAULT_NAME: $(Local.Lemon.Keyvault.name)
+          KEY_VAULT_NAME: $(Local.Lemon.Keyvault.Name)
+
+- stage: Prod
+  displayName: Save Agent IP Prefixes to Prod
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  jobs:
+    - job: InstallNode
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '14.5.0'
+
+      - script: npm i -g npm@6.14.5
+        displayName: 'Install npm 6.14.5'
+      - script: npm install
+        displayName: 'Install Dependancies.'
+      - script: node src/
+        displayName: 'Running app'
+        env:
+          AZURE_CLIENT_ID: $(Local.Client.Id)
+          AZURE_CLIENT_SECRET: $(Local.Client.Secret)
+          AZURE_TENANT_ID: $(Local.Tenant.Id)
+          KEY_VAULT_NAME: $(Local.Prod.Keyvault.Name)
+
 
             
