@@ -1,9 +1,7 @@
-
 const got = require('got')
 const cheerio = require('cheerio')
 const { DefaultAzureCredential } = require('@azure/identity')
 const { SecretClient } = require('@azure/keyvault-secrets')
-const validator = require('validator')
 
 const { msUrl, regions, secretName } = require('./config/config.json')
 const { returnDownloadUrl, getAzPrefixes, extractIps } = require('./services/prefixes')
