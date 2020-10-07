@@ -14,7 +14,7 @@ async function main() {
     console.log('app started...')
     const url = await returnDownloadUrl(got, msUrl, cheerio)
     const azPrefixes = await getAzPrefixes(got, url)
-    const azPrefixList = extractIps(regions, azPrefixes, validator)
+    const azPrefixList = extractIps(regions, azPrefixes)
     const secret = {
         name: secretName,
         value: azPrefixList
