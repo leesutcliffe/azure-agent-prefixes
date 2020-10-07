@@ -48,7 +48,7 @@ function getAzPrefixes(get, url) {
  */
 function extractIps(regions, AzIpRanges) {
     // initialise eempty array
-    let ipArray = []
+    const ipArray = []
 
     // validate value property
     if (!Object.prototype.hasOwnProperty.call(AzIpRanges, 'values')) {
