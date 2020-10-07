@@ -48,7 +48,7 @@ function getAzPrefixes(get, url) {
  */
 function extractIps(regions, AzIpRanges) {
     // initialise eempty array
-    const ipArray = []
+    let ipArray = []
 
     // validate value property
     if (!Object.prototype.hasOwnProperty.call(AzIpRanges, 'values')) {
@@ -63,7 +63,9 @@ function extractIps(regions, AzIpRanges) {
 
             // push ip ranges on to ipArray
             if (value.name === region) {
-                ipArray.push(value.properties.addressPrefixes)
+                // filter out any IPv6 address (IPv4 addresses contain '.' notation)
+                const prefixes = value.properties.addressPrefixes.filter(prefix => prefix.includes('.'))
+                ipArray.push(prefixes)
             }
         })
     })
