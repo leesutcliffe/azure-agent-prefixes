@@ -12,6 +12,7 @@ const kvSave = require('./services/keyvault')
 main()
 
 async function main() {
+    console.log('app started...')
     const url = await returnDownloadUrl(got, msUrl, cheerio)
     const azPrefixes = await getAzPrefixes(got, url)
     const azPrefixList = extractIps(regions, azPrefixes)
@@ -20,5 +21,12 @@ async function main() {
         value: azPrefixList
     }
     kvSave.prefixes(secret, DefaultAzureCredential, SecretClient)
+<<<<<<< HEAD
         .catch(console.error)
+=======
+        .catch(err => {
+            console.log(err)
+            process.exit(1)
+        })
+>>>>>>> dev1
 }

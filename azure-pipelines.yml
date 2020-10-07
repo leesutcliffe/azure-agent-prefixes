@@ -1,0 +1,67 @@
+variables:
+  - group: Hosted Agent IP Retrieval
+  - name: 'disable.coverage.autogenerate'
+    value: true
+
+schedules:
+- cron: "0 2 * * 1"
+  displayName: Weekly Schedule
+  branches:
+    include:
+    - master
+  always: true
+      
+stages:
+- stage: Test
+  displayName: Install app and test
+  jobs:
+    - job: InstallNodeRunTestsAndEsLint
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '14.5.0'
+
+      - script: npm i -g npm@6.14.5
+        displayName: 'Install npm 6.14.5'
+      - script: npm install
+        displayName: 'Install Dependancies.'
+      - script: npm run pipelinetests
+        displayName: 'Run Unit Tests and Coverage.'
+      - script: npm run lint
+        displayName: 'Run ES Lint.'
+
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          testRunner: JUnit
+          testResultsFiles: '**/test-results.xml'
+
+      - task: PublishCodeCoverageResults@1
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+          reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+            
+- stage: Deploy
+  displayName: Save Prefixes
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  jobs:
+    - job: InstallNode
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '14.5.0'
+
+      - script: npm i -g npm@6.14.5
+        displayName: 'Install npm 6.14.5'
+      - script: npm install
+        displayName: 'Install Dependancies.'
+      - script: node src/
+        displayName: 'Running app'
+        env:
+          AZURE_CLIENT_ID: $(Local.Client.Id)
+          AZURE_CLIENT_SECRET: $(Local.Client.Secret)
+          AZURE_TENANT_ID: $(Local.Tenant.Id)
+          KEY_VAULT_NAME: $(Local.Master.Keyvault.Name)
+
+            

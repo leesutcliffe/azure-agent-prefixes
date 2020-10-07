@@ -10,7 +10,13 @@ function returnDownloadUrl(get, url, ch) {
         get(url)
             .then(res => {
                 const $ = ch.load(res.body)
+<<<<<<< HEAD
                 resolve($('.link-align').children().attr('href'))
+=======
+                const prefixUrl = $('.link-align').children().attr('href')
+                console.log(`Found prefix url: ${prefixUrl}`)
+                resolve(prefixUrl)
+>>>>>>> dev1
             })
             .catch(err => {
                 reject(err)
@@ -28,6 +34,10 @@ function getAzPrefixes(get, url) {
     return new Promise(function (resolve, reject) {
         get(url)
             .then(res => {
+<<<<<<< HEAD
+=======
+                console.log(`parsing contents of ${url}`)
+>>>>>>> dev1
                 const parsed = JSON.parse(res.body)
                 resolve(parsed)
             })
@@ -52,6 +62,10 @@ function extractIps(regions, AzIpRanges) {
         throw new Error('unable to read \'values\' property in response body')
     }
     regions.forEach(region => {
+<<<<<<< HEAD
+=======
+        console.log(`retrieving IP prefixes for region: ${region}`)
+>>>>>>> dev1
         AzIpRanges.values.forEach(value => {
             if (!Object.prototype.hasOwnProperty.call(value, 'name')) {
                 throw new Error(`unable to read 'values.name[${region}]' property in response body`)
@@ -59,14 +73,24 @@ function extractIps(regions, AzIpRanges) {
 
             // push ip ranges on to ipArray
             if (value.name === region) {
+<<<<<<< HEAD
                 ipArray.push(value.properties.addressPrefixes)
+=======
+                // filter out any IPv6 address (IPv4 addresses contain '.' notation)
+                const prefixes = value.properties.addressPrefixes.filter(prefix => prefix.includes('.'))
+                ipArray.push(prefixes)
+>>>>>>> dev1
             }
         })
     })
 
     // flatten array and return as string
     const flatten = ipArray.flat()
+<<<<<<< HEAD
     return flatten.toString()
+=======
+    return JSON.stringify(flatten)
+>>>>>>> dev1
 }
 
 module.exports = {

@@ -20,13 +20,18 @@
   "scripts": {
     "lint": "eslint --no-color src",
     "test": "nyc mocha --recursive && nyc report --reporter=html",
-    "watch": "mocha --recursive --watch"
+    "watch": "mocha --recursive --watch",
+    "pipelinetests": "nyc mocha --recursive test --reporter mocha-junit-reporter && nyc report --reporter=cobertura"
   },
   "keywords": [],
   "author": "Lee Sutcliffe",
   "repository": {
     "type": "git",
+<<<<<<< HEAD
     "url": "https://github.com/leesutcliffe/azure-agent-prefixes.git"
+=======
+    "url": "https://TTDigital@dev.azure.com/TTDigital/Digital/_git/TTD-AgentIp-Automation"
+>>>>>>> dev1
   },
   "license": "MIT",
   "dependencies": {
@@ -44,7 +49,8 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "mocha": "^8.0.1",
+    "mocha": "^8.1.3",
+    "mocha-junit-reporter": "2.0.0",
     "nyc": "^15.1.0"
   }
 }
