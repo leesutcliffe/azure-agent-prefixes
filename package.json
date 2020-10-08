@@ -34,7 +34,8 @@
     "@azure/identity": "^1.1.0",
     "@azure/keyvault-secrets": "^4.1.0",
     "cheerio": "^1.0.0-rc.3",
-    "got": "^11.7.0"
+    "got": "^11.7.0",
+    "validator": "^13.1.17"
   },
   "devDependencies": {
     "chai": "^4.2.0",

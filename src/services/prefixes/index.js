@@ -1,3 +1,9 @@
+module.exports = {
+    extractIps,
+    getAzPrefixes,
+    returnDownloadUrl
+}
+
 /**
  * Returns the URL for the JSON file containing Azure IPs
  *
@@ -45,10 +51,11 @@ function getAzPrefixes(get, url) {
  *
  * @param {Array} regions - list of required regions
  * @param {object} AzIpRanges - Parsed JSON object containing published Azure IP ranges
+ * @param {function} validator - Validator function passed as argument
  */
-function extractIps(regions, AzIpRanges) {
+function extractIps(regions, AzIpRanges, validator) {
     // initialise eempty array
-    const ipArray = []
+    let prefixes = []
 
     // validate value property
     if (!Object.prototype.hasOwnProperty.call(AzIpRanges, 'values')) {
@@ -61,22 +68,16 @@ function extractIps(regions, AzIpRanges) {
                 throw new Error(`unable to read 'values.name[${region}]' property in response body`)
             }
 
-            // push ip ranges on to ipArray
+            // push ip ranges on to prefixes - exlude any IPv6 (isIPRange IPv4 only https://www.npmjs.com/package/validator)
             if (value.name === region) {
-                // filter out any IPv6 address (IPv4 addresses contain '.' notation)
-                const prefixes = value.properties.addressPrefixes.filter(prefix => prefix.includes('.'))
-                ipArray.push(prefixes)
+                prefixes = value.properties.addressPrefixes.filter(prefix => {
+                    return validator.isIPRange(prefix)
+                })
             }
         })
     })
 
     // flatten array and return as string
-    const flatten = ipArray.flat()
-    return JSON.stringify(flatten)
-}
-
-module.exports = {
-    returnDownloadUrl,
-    getAzPrefixes,
-    extractIps
+    const flattened = prefixes.flat()
+    return JSON.stringify(flattened)
 }

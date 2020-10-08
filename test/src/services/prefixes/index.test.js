@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiAsPromised = require("chai-as-promised")
 const expect = chai.expect;
 const cheerio = require('cheerio')
+const validator = require('validator')
 chai.use(chaiAsPromised)
 var fs = require('fs');
 
@@ -78,20 +79,20 @@ describe('extractIps tests', () => {
     }
 
     it('throws and error if values property is missing', function() {
-        expect(() => {extractIps(['AzureCloud.uksouth'], {})}).to.throw()
+        expect(() => {extractIps(['AzureCloud.uksouth'], {}, validator)}).to.throw()
     })
 
     it('throws and error if values.name property is missing', function() {
-        expect(() => {extractIps(['AzureCloud.uksouth'], valueNoName)}).to.throw()
+        expect(() => {extractIps(['AzureCloud.uksouth'], valueNoName, validator)}).to.throw()
     })
 
     it('returns an array of ip ranges in the given region', () => {
-        const data = extractIps(['AzureCloud.uksouth'], ranges)
+        const data = extractIps(['AzureCloud.uksouth'], ranges, validator)
         expect(data).to.be.an('string').that.includes('["13.104.129.128/26"')
     })
 
     it('returns an array that does not inlclude any IPv6 prefixes', () => {
-        const data = extractIps(['AzureCloud.uksouth'], ranges)
+        const data = extractIps(['AzureCloud.uksouth'], ranges, validator)
         expect(data).to.be.an('string').that.not.includes('2603:1027:1:40::/59')
     })
 })
