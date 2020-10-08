@@ -34,14 +34,26 @@ Configurable parameters are stored in ```src/config/config.json```
 {
    "msUrl": "https://www.microsoft.com/en-us/download/confirmation.aspx?id=56519",
    "regions": [
+<<<<<<< HEAD
        "AzureCloud.uksouth"
+=======
+        "AzureCloud.uksouth2",
+        "AzureCloud.uksouth",
+        "AzureCloud.ukwest",
+        "AzureCloud.uknorth"
+>>>>>>> dev1
    ],
    "secretName": "az-agent-prefixes"
 }
 ```
  
 * msUrl - The Microsoft URL which prompts the download of the list Azure prefixes
+<<<<<<< HEAD
 * regions - The list of regions where your services are hosted
+=======
+* regions - The list of regions where your services are hosted. Ensure all regions for your environments geography is configured. 
+  * E.g. If your environment is UK South, the UK is your georgraphy. Include all of UK regions, as Azure cannot guarantee an agents will be used from your organisation's region
+>>>>>>> dev1
 * secretName - The name of the secret in Azure Key vault
  
 ### Azure Environment Variables

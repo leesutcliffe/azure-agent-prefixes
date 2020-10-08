@@ -17,6 +17,7 @@ async function savePrefixesAndVerify(secret, DefAzCred, SecClient) {
     const retrievedSecret = await client.getSecret(secretName)
 
     if (retrievedSecret.value === secret.value) {
+        console.log(`Successfully saved secret: ${secret.name} to ${kvUri}`)
         return true
     }
 }
