@@ -34,14 +34,10 @@ Configurable parameters are stored in ```src/config/config.json```
 {
    "msUrl": "https://www.microsoft.com/en-us/download/confirmation.aspx?id=56519",
    "regions": [
-<<<<<<< HEAD
-       "AzureCloud.uksouth"
-=======
         "AzureCloud.uksouth2",
         "AzureCloud.uksouth",
         "AzureCloud.ukwest",
         "AzureCloud.uknorth"
->>>>>>> dev1
    ],
    "secretName": "az-agent-prefixes"
 }
