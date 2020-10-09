@@ -1,8 +1,8 @@
 
 const cheerio = require('cheerio')
-const DefaultAzureCredential = require('@azure/identity')
+const { DefaultAzureCredential } = require('@azure/identity')
 const got = require('got')
-const SecretClient = require('@azure/keyvault-secrets')
+const { SecretClient } = require('@azure/keyvault-secrets')
 const validator = require('validator')
 
 const kvSave = require('./services/keyvault')

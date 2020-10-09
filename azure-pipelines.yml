@@ -1,5 +1,5 @@
 variables:
-  - group: Hosted Agent IP Retrieval
+  - group: __YOUR_VARIABLE_GROUP_HERE__
   - name: 'disable.coverage.autogenerate'
     value: true
 
